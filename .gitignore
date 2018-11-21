@@ -15,3 +15,6 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
+
+# 忽略icloud的备份文件
+*.icloud
