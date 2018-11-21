@@ -3,8 +3,10 @@ var Schema = mongoose.Schema;
 var productSchema = new Schema({
     "productId": String,
     "productName": String,
-    "productPrice": Number,
-    "productImg": String
+    "salePrice": Number,
+    "productImage": String,
+    "checked":String,
+    "productNum":Number
 })
 
-module.exports = mongoose.model('Product',productSchema);
+module.exports = mongoose.model('good',productSchema);
