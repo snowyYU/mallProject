@@ -45,8 +45,8 @@ new Vue({
   store,
   router,
   mounted(){
-    this.checkLogin();
-    this.getCartCount();
+    //this.checkLogin();
+    //this.getCartCount();
   },
   methods:{
     checkLogin(){
