@@ -1,30 +1,24 @@
-# mall-project
+# 简易的商城实现 #
+>vue全家桶+nodejs(express)+MongoDB，前后分离，后端只提供resetful接口
 
-> A Vue.js project
+## 前端部分 ##
+- vue + router + vuex
+- 优化: 图片懒加载，滚动请求数据(vue-lazyload，vue-infinite-scroll)
 
-## Build Setup
+## 后端部分 ##
+- nodejs + express
+- 使用mongoose简化数据库操作
 
-``` bash
-# install dependencies
-npm install
+## 数据库 ##
+- mongoDB
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 功能 ##
 
-# build for production with minification
-npm run build
+- 实现了登录以及登录状态检测
+- 商品列表的查询，价格过滤等
+- 添加商品至购物车
+- 购物车内列表的查询以及数量增加减少，商品的删除
+- 用户地址的查询，默认地址的变动
+- 订单提交成功数据的渲染
 
-# build for production and view the bundle analyzer report
-npm run build --report
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
