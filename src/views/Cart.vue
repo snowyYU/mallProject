@@ -82,7 +82,7 @@
                   <div class="item-quantity">
                     <div class="select-self select-self-open">
                       <div class="select-self-area">
-                        <a class="input-sub" @click="editCart('minu',item)">-</a>
+                        <a class="input-sub" @click="editCart('minus',item)">-</a>
                         <span class="select-ipt">{{item.productNum}}</span>
                         <a class="input-add" @click="editCart('add',item)">+</a>
                       </div>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn" @click="delConfirmCart(item.productId)">
+                    <a href="javascript:;" class="item-edit-btn" @click="delConfirmCart(item)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -122,7 +122,7 @@
                 Item total: <span class="total-price">{{totalPrice | currency('$')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount=='0'}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -175,6 +175,7 @@ import axios from 'axios'
               cartList:[],
               productId:'',
               modalConfirm:false,
+              delItem:{}
               // checkAllFlag:false
             }
         },
@@ -216,19 +217,20 @@ import axios from 'axios'
               this.cartList = res.result
             })
           },
-          delConfirmCart(productId){
-            this.productId = productId;
+          delConfirmCart(item){
+            this.delItem = item;
             this.modalConfirm = true;
           },
           delCart(){
             axios.post("/users/cart/del",{
-              productId:this.productId
+              productId:this.delItem.productId
             }).then((response)=>{
               let res = response.data;
 
               if(res.status == '0'){
                 this.modalConfirm = false;
-                this.init()
+                this.init();
+                this.$store.commit('updateCartCount',-this.delItem.productNum);
               }
             })
           },
@@ -252,7 +254,15 @@ import axios from 'axios'
               productNum:item.productNum,
               checked:item.checked
             }).then((response)=>{
-              let res = response.data
+              let res = response.data;
+              let num = 0;
+              if(flag=='add'){
+                num = 1;
+              }else if(flag=='minus'){
+                num = -1;
+              }
+              this.$store.commit("updateCartCount",num);
+              this.init();
             })
           },
           toggleCheckAll(){
@@ -269,7 +279,15 @@ import axios from 'axios'
                 
               }
             })
+          },
+          checkOut(){
+            if(this.checkedCount>0){
+              this.$router.push({
+                path:"/address"
+              })
+            }
           }
+
         }
     }
 </script>

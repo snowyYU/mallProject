@@ -18,7 +18,7 @@
             <div class="filter stopPop" id="filter" v-bind:class="{'filterby-show': filterBy}">
               <dl class="filter-price">
                 <dt>Price:</dt>
-                <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" @click="priceChecked='all'">All</a></dd>
+                <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" @click="priceChecked='all';setPriceFilter('all')">All</a></dd>
                 <dd v-for="(price,index) in priceFilter">
                   <a href="javascript:void(0)" v-bind:class="{'cur':priceChecked==index}" @click="setPriceFilter(index)">{{price.startPrice}} - {{price.endPrice}}</a>
                 </dd>
@@ -202,6 +202,7 @@ import { setTimeout } from 'timers';
             }).then((res)=>{
               console.log(res);
               if(res.data.status==0){
+                this.$store.commit("updateCartCount",1)
                 this.mdShowCart=true
               }else{
                 this.mdShow=true

@@ -9,8 +9,8 @@
         </symbol>
         <div class="navbar">
           <div class="navbar-left-container">
-            <a href="/">
-              <img class="navbar-brand-logo" src="static/logo.png"></a>
+            <!-- <a href="/">
+              <img class="navbar-brand-logo" src="static/logo.png"></a> -->
           </div>
           <div class="navbar-right-container" style="display: flex;">
             <div class="navbar-menu-container">
@@ -20,7 +20,7 @@
               <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">Login</a>
               <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="logOut">Logout</a>
               <div class="navbar-cart-container">
-                <span class="navbar-cart-count"></span>
+                <span class="navbar-cart-count" v-if="cartCount>0">{{cartCount}}</span>
                 <a class="navbar-link navbar-cart-link" href="/#/cart">
                   <svg class="navbar-cart-logo">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -63,7 +63,7 @@
 </template>
 <script>
 import axios from 'axios'
-
+import { mapState } from 'vuex'
   export default{
     data(){
       return{
@@ -77,12 +77,20 @@ import axios from 'axios'
     mounted(){
       this.checkLogin();
     },
+    computed:{
+      ...mapState(['cartCount'])
+      // cartCount(){
+      //   return this.$store.state.cartCount
+      // }
+    },
     methods:{
       checkLogin(){
         axios.get('/users/checkLogin').then((response)=>{
           let res = response.data;
           if(res.status=='0'){
             this.nickName = res.result
+            this.getCartCount();
+
           }
         })
       },
@@ -100,6 +108,7 @@ import axios from 'axios'
             this.errorTip = false;
             this.loginModalFlag = false;
             this.nickName = res.result.userName;
+            this.getCartCount();
           }else{
             this.errorTip = true
           }
@@ -111,6 +120,12 @@ import axios from 'axios'
           if(res.status=="0"){
             this.nickName = ''
           }
+        })
+      },
+      getCartCount(){
+        axios.get("/users/getCartCount").then((response)=>{
+          let res = response.data
+          this.$store.commit("initCartCount",res.result)
         })
       }
     }
